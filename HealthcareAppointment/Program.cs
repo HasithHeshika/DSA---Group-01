@@ -224,37 +224,41 @@ class Program
             Console.WriteLine($"{appt.PatientName} at {appt.AppointmentTime}, Priority {appt.Priority}, Room: {appt.Room.Name}");
         }
 
-        // Bubble Sort and Measure Time - Sahipiramigan N.
-        Stopwatch stopwatch = Stopwatch.StartNew();
-        SortingAlgorithms.BubbleSort(appointments);
-        stopwatch.Stop();
-        Console.WriteLine("\nAppointments after Bubble Sort:");
-        foreach (var appt in appointments)
-        {
-            Console.WriteLine($"{appt.PatientName} at {appt.AppointmentTime}, Priority {appt.Priority}, Room: {appt.Room.Name}");
-        }
-        Console.WriteLine($"Bubble Sort execution time: {stopwatch.ElapsedMilliseconds} ms");
+        // Measure execution time for each sorting algorithm multiple times
+        int iterations = 1000;
+        long bubbleSortTime = 0;
+        long mergeSortTime = 0;
+        long quickSortTime = 0;
 
-        // Merge Sort and Measure Time - Hasith Heshika
-        stopwatch.Restart();
-        SortingAlgorithms.MergeSort(appointments);
-        stopwatch.Stop();
-        Console.WriteLine("\nAppointments after Merge Sort:");
-        foreach (var appt in appointments)
+        for (int i = 0; i < iterations; i++)
         {
-            Console.WriteLine($"{appt.PatientName} at {appt.AppointmentTime}, Priority {appt.Priority}, Room: {appt.Room.Name}");
-        }
-        Console.WriteLine($"Merge Sort execution time: {stopwatch.ElapsedMilliseconds} ms");
+            var bubbleSortAppointments = new List<Appointment>(appointments);
+            var mergeSortAppointments = new List<Appointment>(appointments);
+            var quickSortAppointments = new List<Appointment>(appointments);
 
-        // Quick Sort and Measure Time - Sadeep Sitharaka
-        stopwatch.Restart();
-        SortingAlgorithms.QuickSort(appointments, 0, appointments.Count - 1);
-        stopwatch.Stop();
-        Console.WriteLine("\nAppointments after Quick Sort:");
-        foreach (var appt in appointments)
-        {
-            Console.WriteLine($"{appt.PatientName} at {appt.AppointmentTime}, Priority {appt.Priority}, Room: {appt.Room.Name}");
+            Stopwatch stopwatch = new Stopwatch();
+
+            // Bubble Sort
+            stopwatch.Start();
+            SortingAlgorithms.BubbleSort(bubbleSortAppointments);
+            stopwatch.Stop();
+            bubbleSortTime += stopwatch.ElapsedTicks;
+
+            // Merge Sort
+            stopwatch.Restart();
+            SortingAlgorithms.MergeSort(mergeSortAppointments);
+            stopwatch.Stop();
+            mergeSortTime += stopwatch.ElapsedTicks;
+
+            // Quick Sort
+            stopwatch.Restart();
+            SortingAlgorithms.QuickSort(quickSortAppointments, 0, quickSortAppointments.Count - 1);
+            stopwatch.Stop();
+            quickSortTime += stopwatch.ElapsedTicks;
         }
-        Console.WriteLine($"Quick Sort execution time: {stopwatch.ElapsedMilliseconds} ms");
+
+        Console.WriteLine($"\nAverage Bubble Sort execution time: {bubbleSortTime / iterations} ticks");
+        Console.WriteLine($"Average Merge Sort execution time: {mergeSortTime / iterations} ticks");
+        Console.WriteLine($"Average Quick Sort execution time: {quickSortTime / iterations} ticks");
     }
 }
